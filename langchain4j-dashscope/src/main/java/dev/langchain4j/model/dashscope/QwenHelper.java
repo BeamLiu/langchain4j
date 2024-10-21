@@ -182,8 +182,11 @@ class QwenHelper {
                 Image image = ((ImageContent) content).image();
                 String imageContent;
                 if (image.url() != null) {
+                    // avoid a dashscope bug
                     imageContent = image.url().toString();
-                    return Collections.singletonMap("image", imageContent);
+                    HashMap<String, Object> contentMap = new HashMap<>(1);
+                    contentMap.put("image", imageContent);
+                    return contentMap;
                 } else if (Utils.isNotNullOrBlank(image.base64Data())) {
                     // The dashscope sdk supports local file url: file://...
                     // Using the temporary directory for storing temporary files is a safe practice,
